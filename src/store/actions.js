@@ -26,16 +26,48 @@ export const getClients = (data={}) =>{
 }
 
 
-// export const addTask = (data) =>{
-//     return (dispatch)=>{
-//         dispatch({type:actionTypes.LOADING})
-//         request(`${apiUrl}/task`,"POST",data)
-//         .then(res=>{
-//             dispatch({type:actionTypes.ADD_TASK_SUCCESS, task:res})
-//         })
-//         .catch((error) => {
-//             dispatch({type:actionTypes.ERROR, errorMessage:error.message})
-//           })
-//     }
+export const getProviders = () =>{
+    
+    let url = `http://localhost:3001/provider`;
+    
+    return (dispatch)=>{
+        dispatch({type:actionTypes.LOADING})
+        request(url)
+        .then(res=>{
+            dispatch({type:actionTypes.GET_PROVIDERS_SUCCESS, providerList:res})
+            console.log(res,'providerList')
+        })
+        .catch((error) => {
+            dispatch({type:actionTypes.ERROR, errorMessage:error.message})
+          })
+    }
    
-// }
+}
+
+
+export const addProvider = (data) =>{
+    return (dispatch)=>{
+        dispatch({type:actionTypes.LOADING})
+        request(`http://localhost:3001/provider`,"POST",data)
+        .then(res=>{
+            dispatch({type:actionTypes.ADD_PROVIDER_SUCCESS, provider:res})
+        })
+        .catch((error) => {
+            dispatch({type:actionTypes.ERROR, errorMessage:error.message})
+          })
+    }
+   
+}
+export const addClient = (data) =>{
+    return (dispatch)=>{
+        dispatch({type:actionTypes.LOADING})
+        request(`http://localhost:3001/client`,"POST",data)
+        .then(res=>{
+            dispatch({type:actionTypes.ADD_CLIENT_SUCCESS, client:res})
+        })
+        .catch((error) => {
+            dispatch({type:actionTypes.ERROR, errorMessage:error.message})
+          })
+    }
+   
+}

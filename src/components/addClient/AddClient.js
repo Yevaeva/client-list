@@ -1,13 +1,15 @@
 import React, { createRef } from 'react'
 import './AddClient.scss'
 import { Modal, Button } from 'react-bootstrap'
+import { connect } from 'react-redux';
+import { addClient, addProvider } from '../../store/actions';
+import { toast } from "react-toastify"
+import ProviderList from '../providerList/ProviderList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash, faEdit, faCheck, faHistory } from '@fortawesome/free-solid-svg-icons';
-
-
 class AddClient extends React.PureComponent {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.inputRef = createRef()
 
         this.state = {
@@ -15,20 +17,8 @@ class AddClient extends React.PureComponent {
             email: '',
             phone: '',
             newProvider: '',
-            providers: [
-                {
-                    id: 1,
-                    name: 'provider1'
-                },
-                {
-                    id: 2,
-                    name: 'provider2'
-                },
-                {
-                    id: 3,
-                    name: 'provider3'
-                },
-            ]
+            selectedProviders: new Set(),
+   
         }
     }
 
@@ -41,28 +31,61 @@ class AddClient extends React.PureComponent {
             [type]: event.target.value,
         })
     }
+    // handleCheck = (e) => {
+    //     const selectedProviders = new Set(this.state.selectedProviders);
+    //     if (selectedProviders.has(e.target.name)) {
+    //         selectedProviders.delete(e.target.name)
+    //     } else {
+    //         selectedProviders.add(e.target.name)
+
+    //     }
+    //     this.setState({
+    //         selectedProviders,
+
+    //     })
+    // }
+    handleCheck = (e) => {
+        const selectedProviders = new Set(this.state.selectedProviders);
+        if (selectedProviders.has(e.target.name)) {
+            selectedProviders.delete(e.target.name)
+        } else {
+            selectedProviders.add(e.target.name)
+
+        }
+        this.setState({
+            selectedProviders,
+
+        })
+    }
 
 
     addProvider = () => {
+        let {newProvider} = this.state
+        let {providerList} = this.props
+        let reapeted = providerList.find((prov)=>{
+           return prov.name===newProvider
+        })
 
-        let { newProvider, providers } = this.state
-        if (newProvider.trim()) {
-            
-          
-                let newProviders = [...providers, { id: 5, name: newProvider }]
-                this.setState({
-                    providers:newProviders,
-                    newProvider:''
-                })
-            
-
-
+        if (newProvider.trim() && reapeted===undefined ) {
+            this.props.addProvider({name:this.state.newProvider.trim()})
+        }
+        else if(reapeted){
+            toast.error("Provider must be unique ❗❗❗")
         }
 
     }
 
-    addClient = ()=>{
-        console.log(this.state)
+    addClient = () => {
+        let providers = [...this.state.selectedProviders]
+        let data = {
+            name:this.state.name,
+            email:this.state.email,
+            phone:this.state.phone,
+            providers
+        }
+        console.log(data)
+        this.props.addClient(data)
+
     }
     handleKeyDown = (event) => {
         if (event.key === 'Enter') {
@@ -71,6 +94,7 @@ class AddClient extends React.PureComponent {
         }
 
     }
+
 
 
     render() {
@@ -82,63 +106,48 @@ class AddClient extends React.PureComponent {
                         <Modal.Title>Add new Client</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <input ref={this.inputRef}
-                            type='text'
-                            placeholder='Name'
-                            onChange={(event) => this.handleChange(event, 'name')}
-                            onKeyDown={this.handleKeyDown}
-                        />
-                        <input
-                            type='text'
-                            placeholder='Email'
-                            onChange={(event) => this.handleChange(event, 'email')}
-                            onKeyDown={this.handleKeyDown}
-                        />
-                        <input
-                            type='text'
-                            placeholder='Phone'
-                            onChange={(event) => this.handleChange(event, 'phone')}
-                            onKeyDown={this.handleKeyDown}
-                        />
-                        <div>
-                            <input
+                        <div className="inputs">
+                            <input ref={this.inputRef}
                                 type='text'
-                                placeholder='Providers'
-                                onChange={(event) => this.handleChange(event, 'newProvider')}
+                                placeholder='Name'
+                                onChange={(event) => this.handleChange(event, 'name')}
                                 onKeyDown={this.handleKeyDown}
                             />
-                            <Button
-                                onClick={this.addProvider}
-                            >Add provider</Button>
-                        </div>
-                        <div>
-                            {
-                                this.state.providers.map((p) => {
-                                    return (
-
-                                        <div key={p.id}>
-                                            <input
-                                                type="checkbox"
-                                            // onClick={this.checkHandler}
-                                            />
-                                            <p>{p.name}</p>
-                                            <button>
-                                                <FontAwesomeIcon icon={faEdit} />
-
-                                            </button>
-                                            <button>
-                                                <FontAwesomeIcon icon={faTrash} />
-
-                                            </button>
-
-                                        </div>
-
-
-                                    )
-                                })
-                            }
+                            <input
+                                type='text'
+                                placeholder='Email'
+                                onChange={(event) => this.handleChange(event, 'email')}
+                                onKeyDown={this.handleKeyDown}
+                            />
+                            <input
+                                type='text'
+                                placeholder='Phone'
+                                onChange={(event) => this.handleChange(event, 'phone')}
+                                onKeyDown={this.handleKeyDown}
+                            />
+                            <div>
+                                <input
+                                    type='text'
+                                    placeholder='Providers'
+                                    onChange={(event) => this.handleChange(event, 'newProvider')}
+                                    onKeyDown={this.handleKeyDown}
+                                />
+                                <Button
+                                    onClick={this.addProvider}
+                                >Add provider</Button>
+                            </div>
                         </div>
 
+                        {
+                            this.props.providers.map((provider) => {
+                                return (
+                                    <ProviderList
+                                    provider={provider}
+                                    handleCheck={this.handleCheck}
+                                     />
+                                )
+                            })
+                        }
 
                     </Modal.Body>
                     <Modal.Footer>
@@ -149,7 +158,7 @@ class AddClient extends React.PureComponent {
                             Cancel
               </Button>
                         <Button variant="primary"
-                        onClick={this.addClient}
+                            onClick={this.addClient}
                         >
                             Add Client
              </Button>
@@ -160,4 +169,15 @@ class AddClient extends React.PureComponent {
     }
 }
 
-export default AddClient
+const mapStateToProps = (state)=>{
+    return {
+        providerList:state.providerList
+    }
+}
+
+const mapDispatchToProps = {
+    addProvider,
+    addClient
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(AddClient)

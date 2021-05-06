@@ -4,12 +4,14 @@ import * as actionTypes from './actionTypes'
 
 const defaultState = {
     clientList: [],
+    providerList:[],
     client: null,
     errorMessage: '',
     successMessage: '',
     loading: false,
     addClientSuccess: false,
     editClientSuccess: false,
+    addProviderSuccess:false
 }
 const reducer = (state = defaultState, action) => {
     switch (action.type) {
@@ -34,22 +36,38 @@ const reducer = (state = defaultState, action) => {
                 clientList: action.clientList,
                 loading: false,
             }
+            case actionTypes.GET_PROVIDERS_SUCCESS:
+            return {
+                ...state,
+                providerList: action.providerList,
+                loading: false,
+            }
     //         case actionTypes.GET_SINGLE_TASK_SUCCESS:
     //         return {
     //             ...state,
     //             task: action.task,
     //             loading: false,
     //         }
-    //     case "ADD_TASK_SUCCESS": {
-    //         let tasks = [...state.tasks, action.task]
-    //         return {
-    //             ...state,
-    //             tasks: tasks,
-    //             loading: false,
-    //             successMessage: '✅✅✅ Task added successfully!!!',
-    //             addTaskSuccess: true
-    //         }
-    //     }
+        case actionTypes.ADD_PROVIDER_SUCCESS: {
+            let providers = [...state.providerList, action.provider]
+            return {
+                ...state,
+                providerList: providers,
+                loading: false,
+                successMessage: '✅✅✅ Provider added successfully!!!',
+                addProviderSuccess: true
+            }
+        }
+        case actionTypes.ADD_CLIENT_SUCCESS: {
+            let clients = [...state.clientList, action.client]
+            return {
+                ...state,
+                clientList: clients,
+                loading: false,
+                successMessage: '✅✅✅ Client added successfully!!!',
+                addClientSuccess: true
+            }
+        }
     //     case actionTypes.REMOVE_TASK_SUCCESS: {
     //         const newTasks = state.tasks.filter((item) => item._id !== action.taskId)
     //         return {

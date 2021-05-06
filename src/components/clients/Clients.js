@@ -3,7 +3,7 @@ import './Clients.scss'
 import { Table } from 'react-bootstrap'
 import AddClient from '../addClient/AddClient'
 import { connect } from 'react-redux'
-import { getClients } from '../../store/actions'
+import { getClients, getProviders } from '../../store/actions'
 
 
 
@@ -21,6 +21,8 @@ class Clients extends React.PureComponent {
       }
 
     toggleNewClientModal = () => {
+        this.props.getProviders()
+
         this.setState({
             openNewClientModal: !this.state.openNewClientModal,
         })
@@ -28,6 +30,7 @@ class Clients extends React.PureComponent {
 
 
     render() {
+        const {clientList} = this.props
         return (
             <div className='back'>
                 <Table striped bordered hover>
@@ -52,26 +55,29 @@ class Clients extends React.PureComponent {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            <td>@mdo</td>
-                            <td>Edit</td>
-                        </tr>
-                        <tr>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                            <td>@fat</td>
-                            <td>Edit</td>
-                        </tr>
+                        {
+                            clientList.map((client)=>{
+                                return(
+                                    <tr>
+                                        <td>{client.name}</td>
+                                        <td>{client.email}</td>
+                                        <td>{client.phone}</td>
+                                        <td>{client.providers.map(p=>p.name).join(', ')}
+                                            </td>
+                                        <td>Edit</td>
+                                </tr> 
+                                )
+                            })
+                        }
+                        
                     </tbody>
                 </Table>
                 {
                     this.state.openNewClientModal &&
                     <AddClient
-                        onClose={this.toggleNewClientModal} />
+                        onClose={this.toggleNewClientModal} 
+                        providers={this.props.providerList}
+                        />
                 }
             </div>
         )
@@ -83,12 +89,14 @@ const mapStateToProps = (state) => {
      clientList: state.clientList,
       addClientSuccess: state.addClientSuccess,
       editClientSuccess: state.editClientSuccess,
+      providerList:state.providerList
   
     }
   }
   
   const mapDispatchToProps = {
-    getClients
+    getClients,
+    getProviders
   }
 
 export default connect(mapStateToProps,mapDispatchToProps)(Clients)
