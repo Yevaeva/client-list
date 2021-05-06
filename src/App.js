@@ -1,25 +1,39 @@
 import logo from './logo.svg';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Clients from './components/clients/Clients';
+import Spinner from './components/spinner/Spinner';
+import { connect } from 'react-redux';
 
-function App() {
+
+function App(props) {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+     <Clients />
+     <ToastContainer
+        position="bottom-left"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+       {props.loading && <Spinner />}
     </div>
+    
   );
 }
+const mapStateToProps = (state) =>{
+  return {
+    errorMessage:state.errorMessage,
+    successMessage:state.successMessage,
+    loading:state.loading
+  }
+}
 
-export default App;
+export default connect(mapStateToProps)(App)
