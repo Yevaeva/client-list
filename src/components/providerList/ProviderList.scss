@@ -1,18 +1,40 @@
 .provWrapper{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px;
 
     
-    p{
-        margin:0 5px 0!important;
+    label{
+        margin-bottom: 4px!important;
     }
-    div{
-        display: flex;
-        // justify-content: space-between;
-      
-        align-items: center;
-        margin: 10px;
+   
+        
+
         input,button{
             margin-right: 10px;
+    }
+
+    .provName{
+        display: flex;
+        align-items: center;
+        width:70%;
+    }
+    button {
+        border:none;
+        background-color: white;
+        svg {
+            font-size: 18px;
+         
         }
     }
+    .editInput {
+        width: 100%;
+    }
+
+    
+    
+    
+    
     
 }

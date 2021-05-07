@@ -1,9 +1,11 @@
 import React from 'react'
 import './Clients.scss'
-import { Table } from 'react-bootstrap'
+import { Table ,Button} from 'react-bootstrap'
 import AddClient from '../addClient/AddClient'
 import { connect } from 'react-redux'
 import { getClients, getProviders } from '../../store/actions'
+import EditClientModal from '../editClientModal/EditClientModal'
+
 
 
 
@@ -12,7 +14,8 @@ class Clients extends React.PureComponent {
         super()
 
         this.state = {
-            openNewClientModal: false
+            openNewClientModal: false,
+            editClient:null
         }
     }
 
@@ -21,12 +24,27 @@ class Clients extends React.PureComponent {
       }
 
     toggleNewClientModal = () => {
+        this.setState({
+            openNewClientModal: !this.state.openNewClientModal,
+        })
+    }
+    openNewClientModal = () => {
         this.props.getProviders()
 
         this.setState({
             openNewClientModal: !this.state.openNewClientModal,
         })
     }
+
+    toggleEdit = (client) => {
+        this.props.getProviders()
+        this.setState({
+            editClient: client
+        })
+    
+      }
+
+     
 
 
     render() {
@@ -39,10 +57,10 @@ class Clients extends React.PureComponent {
                             <th colSpan="5">
                                 <div className='clientHeader'>
                                     <h4>Clients</h4>
-                                    <button
-                                        onClick={this.toggleNewClientModal}
+                                    <Button
+                                        onClick={this.openNewClientModal}
                                     >New Client
-                                 </button>
+                                 </Button>
                                 </div>
                             </th>
                         </tr>
@@ -64,7 +82,11 @@ class Clients extends React.PureComponent {
                                         <td>{client.phone}</td>
                                         <td>{client.providers.map(p=>p.name).join(', ')}
                                             </td>
-                                        <td>Edit</td>
+                                        <td>
+                                            <Button
+                                        onClick={() => this.toggleEdit(client)}
+                                    >Edit
+                                 </Button></td>
                                 </tr> 
                                 )
                             })
@@ -77,8 +99,17 @@ class Clients extends React.PureComponent {
                     <AddClient
                         onClose={this.toggleNewClientModal} 
                         providers={this.props.providerList}
+                        
                         />
                 }
+                {
+          this.state.editClient &&
+          <EditClientModal
+            client={this.state.editClient}
+            onClose={() => this.toggleEdit(null)}
+          />
+
+        }
             </div>
         )
     }

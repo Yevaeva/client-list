@@ -10,6 +10,13 @@ import { connect } from 'react-redux';
 
 
 function App(props) {
+
+  if(props.errorMessage){
+    toast.error(props.errorMessage)
+  }
+  if(props.successMessage){
+    toast.success(props.successMessage)
+  }
   return (
     <div className="App">
      <Clients />

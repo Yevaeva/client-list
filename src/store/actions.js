@@ -71,3 +71,58 @@ export const addClient = (data) =>{
     }
    
 }
+export const editClient= (data) =>{
+    return (dispatch)=>{
+        dispatch({type:actionTypes.LOADING})
+        request(`http://localhost:3001/client/${data._id}`,"PUT", data)
+        .then((editedClient)=>{
+            dispatch({type:actionTypes.EDIT_CLIENT_SUCCESS, client:editedClient})
+        })
+        .catch((error) => {
+            dispatch({type:actionTypes.ERROR, errorMessage:error.message})
+          })
+    }
+   
+}
+
+export const editProvider= (data) =>{
+    return (dispatch)=>{
+        dispatch({type:actionTypes.LOADING})
+        request(`http://localhost:3001/provider/${data._id}`,"PUT", data)
+        .then((editedProvider)=>{
+            dispatch({type:actionTypes.EDIT_PROVIDER_SUCCESS, provider:editedProvider})
+        })
+        .catch((error) => {
+            dispatch({type:actionTypes.ERROR, errorMessage:error.message})
+          })
+    }
+   
+}
+
+export const removeProvider = (id) =>{
+    return (dispatch)=>{
+        dispatch({type:actionTypes.LOADING})
+        request(`http://localhost:3001/provider/${id}`,"DELETE")
+        .then(res=>{
+            dispatch({type:actionTypes.REMOVE_PROVIDER_SUCCESS, id})
+        })
+        .catch((error) => {
+            dispatch({type:actionTypes.ERROR, errorMessage:error.message})
+          })
+    }
+   
+}
+
+export const removeClient = (id) =>{
+    return (dispatch)=>{
+        dispatch({type:actionTypes.LOADING})
+        request(`http://localhost:3001/client/${id}`,"DELETE")
+        .then(res=>{
+            dispatch({type:actionTypes.REMOVE_CLIENT_SUCCESS, id})
+        })
+        .catch((error) => {
+            dispatch({type:actionTypes.ERROR, errorMessage:error.message})
+          })
+    }
+   
+}

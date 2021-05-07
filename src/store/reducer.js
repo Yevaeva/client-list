@@ -11,6 +11,7 @@ const defaultState = {
     loading: false,
     addClientSuccess: false,
     editClientSuccess: false,
+    editProviderSuccess:false,
     addProviderSuccess:false
 }
 const reducer = (state = defaultState, action) => {
@@ -68,15 +69,24 @@ const reducer = (state = defaultState, action) => {
                 addClientSuccess: true
             }
         }
-    //     case actionTypes.REMOVE_TASK_SUCCESS: {
-    //         const newTasks = state.tasks.filter((item) => item._id !== action.taskId)
-    //         return {
-    //             ...state,
-    //             tasks: newTasks,
-    //             loading: false,
-    //             successMessage: '🗑🗑🗑 Task deleted successfully!!!',
-    //         }
-    //     }
+        case actionTypes.REMOVE_PROVIDER_SUCCESS: {
+            const newProviders = state.providerList.filter((item) => item._id !== action.id)
+            return {
+                ...state,
+                providerList: newProviders,
+                loading: false,
+                successMessage: '🗑🗑🗑 Provider deleted successfully!!!',
+            }
+        }
+        case actionTypes.REMOVE_CLIENT_SUCCESS: {
+            const newClients = state.clientList.filter((client) => client._id !== action.id)
+            return {
+                ...state,
+                clientList: newClients,
+                loading: false,
+                successMessage: '🗑🗑🗑 Client deleted successfully!!!',
+            }
+        }
     //     case actionTypes.REMOVE_SELECTED_TASKS_SUCCESS: {
     //         let tasksCopy = [...state.tasks];
     //         action.taskIds.forEach((_id) => {
@@ -93,29 +103,40 @@ const reducer = (state = defaultState, action) => {
 
     //         }
     //     }
-    //     case actionTypes.EDIT_TASK_SUCCESS: {
-    //         if(action.from === 'single'){
-    //             return {
-    //                 ...state,
-    //                 task: action.task,
-    //                 loading: false,
-    //                 successMessage: '🖍🖍🖍 Task edited successfully!!!',
-    //                 editTaskSuccess: true,
-    //             }
-    //         }else {
-    //             let tasks = [...state.tasks];
-    //             let newTaskIndex = tasks.findIndex((task) => task._id === action.task._id);
-    //             tasks[newTaskIndex] = action.task;
-    //             return {
-    //                 ...state,
-    //                 tasks: tasks,
-    //                 loading: false,
-    //                 successMessage: '🖍🖍🖍 Task edited successfully!!!',
-    //                 editTaskSuccess: true,
-    //             }
-    //         }
+        case actionTypes.EDIT_CLIENT_SUCCESS: {
+            let clients = [...state.clientList];
+                let newClientIndex = clients.findIndex((client) => client._id === action.client._id);
+                clients[newClientIndex] = action.client;
+                return {
+                    ...state,
+                    clientList:clients,
+                    loading: false,
+                    successMessage: '🖍🖍🖍 Client edited successfully!!!',
+                    editClientSuccess: true,
+                }
             
-    //     }
+            
+        }
+        case actionTypes.EDIT_PROVIDER_SUCCESS: {
+            let providers = [...state.providerList];
+                let newProviderIndex = providers.findIndex((p) => p._id === action.provider._id);
+                providers[newProviderIndex] = action.provider;
+
+                
+                // let clients = [...state.clientList];
+                // let newClientIndex = clients.findIndex((client) => client.providers.map((p)=>p._id === action.provider._id));
+                // console.log('newClientIndex',newClientIndex)
+                // clients[newClientIndex] = action.client;
+                return {
+                    ...state,
+                    providerList:providers,
+                    loading: false,
+                    successMessage: '🖍🖍🖍 Provider edited successfully!!!',
+                    editProviderSuccess: true,
+                }
+            
+            
+        }
     //     case actionTypes.CHANGE_TASK_STATUS_SUCCESS: {
     //         let message = ''
     //         if(action.task.status === 'active'){

@@ -5,5 +5,36 @@
     flex-direction: column;
     input {
         margin: 10px;
+        padding: 6px;
+        border-radius: 10px;
+        border:1px solid gray;
+    }
+}
+.addProvider {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 10px;
+    input {
+        width: 60%;
+    }
+}
+input:focus {
+    outline:none;
+    background-color:rgba(202, 196, 196,0.5);
+}
+
+.providerList {
+    border: 1px solid gray;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.btns {
+    display: flex;
+    justify-content: space-between;
+    width: 95%;
+    button {
+        margin-right: 20px;
     }
 }
