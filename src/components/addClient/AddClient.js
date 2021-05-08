@@ -84,11 +84,14 @@ class AddClient extends React.PureComponent {
             toast.error("All fields marked with * are required ❗❗❗")
             return
         }
-        let providers = [...this.state.selectedProviders]
+        let providers = [...this.state.selectedProviders].map((p)=>{
+            return {name:p}
+        }
+        )
         let data = {
             name: this.state.name,
             email: this.state.email,
-            phone: this.state.phone,
+            phone: + this.state.phone,
             providers
         }
         console.log(data)

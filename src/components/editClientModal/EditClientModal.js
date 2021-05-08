@@ -78,7 +78,9 @@ class EditClientModal extends React.PureComponent {
       toast.error("All fields marked with * are required ❗❗❗")
       return
     }
-    const providers = [...this.state.selectedProviders]
+    const providers = [...this.state.selectedProviders].map(p=>{
+      return {name:p}
+    })
     const data = {
       name: this.state.name,
       email: this.state.email,
