@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux';
-import './EditClientModal.scss'
 import { toast } from "react-toastify"
 import { addProvider, editClient, removeClient } from '../../store/actions';
 import { Modal, Button } from 'react-bootstrap'
@@ -22,7 +21,6 @@ class EditClientModal extends React.PureComponent {
   }
 
   componentDidMount() {
-    console.log(this.state)
     this.inputRef.current.focus()
     this.setState({
       selectedProviders: new Set([...this.state.providers.map((checked) => checked.name)])
@@ -62,9 +60,8 @@ class EditClientModal extends React.PureComponent {
       selectedProviders.delete(e.target.name)
     } else {
       selectedProviders.add(e.target.name)
-
     }
-    console.log('selectedProviders', selectedProviders)
+
     this.setState({
       selectedProviders,
 
@@ -77,19 +74,39 @@ class EditClientModal extends React.PureComponent {
     if(!email || !name || !phone){
       toast.error("All fields marked with * are required ❗❗❗")
       return
+    };
+    const regexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    const reg = /^\d+$/
+
+    if (email && !regexp.test(email)){
+        toast.error("Write valid email address ❗❗❗")
+        return
     }
-    const providers = [...this.state.selectedProviders].map(p=>{
-      return {name:p}
-    })
-    const data = {
-      name: this.state.name,
-      email: this.state.email,
-      phone: this.state.phone,
-      _id: this.state._id,
-      providers
+    else if(phone && !reg.test(phone)){
+        toast.error("Phone must contain only numbers ❗❗❗")
+        return
+
     }
-    this.props.editClient(data)
-    this.props.onClose()
+    else if(!name || !email || !phone){
+        toast.error("All fields marked with * are required ❗❗❗")
+        return
+    }
+    
+      const providers = [...this.state.selectedProviders].map(p=>{
+        return {name:p}
+      })
+      const data = {
+        name: this.state.name,
+        email: this.state.email,
+        phone: this.state.phone,
+        _id: this.state._id,
+        providers
+      }
+      this.props.editClient(data)
+
+      this.props.onClose()
+ 
+    
   }
 
   toggleConfirm = () => {
@@ -106,11 +123,7 @@ class EditClientModal extends React.PureComponent {
 
 
   render() {
-
-
-
     return (
-
       <div>
         <Modal centered show={true} onHide={this.props.onClose}>
           <Modal.Header closeButton>
@@ -130,7 +143,6 @@ class EditClientModal extends React.PureComponent {
                 placeholder='Email *'
                 value={this.state.email}
                 onChange={(event) => this.editChangeHandler(event, 'email')}
-
               />
               <input
                 type='text'
@@ -139,7 +151,6 @@ class EditClientModal extends React.PureComponent {
                 onChange={(event) => this.editChangeHandler(event, 'phone')}
               />
               <div className='addProvider'>
-
                 <input
                   type='text'
                   placeholder='Providers'
@@ -148,14 +159,12 @@ class EditClientModal extends React.PureComponent {
                 />
                 <Button
                   onClick={this.addProvider}
-
                 >Add provider</Button>
               </div>
             </div>
             <div className='providerList'>
               {
                 this.props.providerList.map((provider) => {
-
                   return (
                     <ProviderList
                       provider={provider}
@@ -166,13 +175,11 @@ class EditClientModal extends React.PureComponent {
                 })
               }
             </div>
-
           </Modal.Body>
           <Modal.Footer>
             <div className='btns'>
             <Button variant="danger"
               onClick={this.toggleConfirm}
-
             >
               Delete Client
               </Button>
@@ -192,7 +199,6 @@ class EditClientModal extends React.PureComponent {
           </Modal.Footer>
         </Modal>
 
-
         {
           this.state.showConfirm &&
           <Confirm
@@ -200,10 +206,6 @@ class EditClientModal extends React.PureComponent {
             removeClient={this.removeClient} />
         }
       </div>
-
-
-
-
     )
   }
 
@@ -211,7 +213,8 @@ class EditClientModal extends React.PureComponent {
 
 const mapStateToProps = (state) => {
   return {
-    providerList: state.providerList
+    providerList: state.providerList,
+    errorMessage:state.errorMessage
   }
 }
 
@@ -219,7 +222,6 @@ const mapDispatchToProps = {
   addProvider,
   editClient,
   removeClient
-
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditClientModal)

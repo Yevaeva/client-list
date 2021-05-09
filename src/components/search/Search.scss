@@ -1,0 +1,12 @@
+.advanced {
+    display: flex;
+    justify-content: space-between;
+
+    .search {
+        width: 70%;
+    }
+
+    .sort {
+        width: 25%;
+    }
+}

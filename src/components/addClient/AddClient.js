@@ -31,7 +31,7 @@ class AddClient extends React.PureComponent {
             [type]: event.target.value,
         })
     }
-   
+
     handleCheck = (e) => {
         const selectedProviders = new Set(this.state.selectedProviders);
         if (selectedProviders.has(e.target.name)) {
@@ -67,25 +67,25 @@ class AddClient extends React.PureComponent {
     }
 
     addClient = () => {
-        let regexp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        var reg = /^\d+$/
+        const regexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        const reg = /^\d+$/
         let { email, name, phone } = this.state
 
-        if (email && !regexp.test(email)){
+        if (email && !regexp.test(email)) {
             toast.error("Write valid email address ❗❗❗")
             return
         }
-        else if(phone && !reg.test(phone)){
+        else if (phone && !reg.test(phone)) {
             toast.error("Phone must contain only numbers ❗❗❗")
             return
 
         }
-        else if(!name || !email || !phone){
+        else if (!name || !email || !phone) {
             toast.error("All fields marked with * are required ❗❗❗")
             return
         }
-        let providers = [...this.state.selectedProviders].map((p)=>{
-            return {name:p}
+        let providers = [...this.state.selectedProviders].map((p) => {
+            return { name: p }
         }
         )
         let data = {
@@ -94,16 +94,12 @@ class AddClient extends React.PureComponent {
             phone: + this.state.phone,
             providers
         }
-        console.log(data)
         this.props.addClient(data)
         this.props.onClose()
 
     }
 
-    handleKeyDown = (event) => {
-        if (event.key === 'Enter') {
-        }
-    }
+
 
 
 
@@ -111,7 +107,8 @@ class AddClient extends React.PureComponent {
         let onClose = this.props.onClose
         return (
             <div>
-                <Modal centered show={true} onHide={onClose}>
+                <Modal dialogClassName="size"
+ centered show={true} onHide={onClose}>
                     <Modal.Header closeButton>
                         <Modal.Title>Add new Client</Modal.Title>
                     </Modal.Header>
@@ -122,21 +119,21 @@ class AddClient extends React.PureComponent {
                                 placeholder='Name *'
                                 value={this.state.name}
                                 onChange={(event) => this.handleChange(event, 'name')}
-                                onKeyDown={this.handleKeyDown}
+
                             />
                             <input
                                 type='email'
                                 placeholder='Email *'
                                 value={this.state.email}
                                 onChange={(event) => this.handleChange(event, 'email')}
-                                onKeyDown={this.handleKeyDown}
+
                             />
                             <input
                                 type='text'
                                 placeholder='Phone *'
                                 value={this.state.phone}
                                 onChange={(event) => this.handleChange(event, 'phone')}
-                                onKeyDown={this.handleKeyDown}
+
                             />
                             <div className='addProvider'>
                                 <input
@@ -144,7 +141,7 @@ class AddClient extends React.PureComponent {
                                     placeholder='Providers'
                                     value={this.state.newProvider}
                                     onChange={(event) => this.handleChange(event, 'newProvider')}
-                                    onKeyDown={this.handleKeyDown}
+
                                 />
                                 <Button
                                     onClick={this.addProvider}
@@ -156,10 +153,12 @@ class AddClient extends React.PureComponent {
                             {
                                 this.props.providers.map((provider) => {
                                     return (
-                                        <ProviderList
-                                            provider={provider}
-                                            handleCheck={this.handleCheck}
-                                        />
+                                        <div key={provider._id}>
+                                            <ProviderList
+                                                provider={provider}
+                                                handleCheck={this.handleCheck}
+                                            />
+                                        </div>
                                     )
                                 })
 
