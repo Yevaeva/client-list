@@ -1,4 +1,5 @@
 {
+  "homepage": "http://yevaeva.github.io/client-list",
   "name": "client-list",
   "version": "0.1.0",
   "private": true,
@@ -26,7 +27,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "gh-pages -d build"
+
   },
   "eslintConfig": {
     "extends": [
@@ -47,6 +50,7 @@
     ]
   },
   "devDependencies": {
+    "gh-pages": "^3.1.0",
     "redux-logger": "^3.0.6"
   }
 }
