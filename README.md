@@ -1,5 +1,5 @@
 # ClientList
-Web site https://client-list.netlify.app/
+Web site https://yevaeva.github.io/client-list/
 
 Using ReactJS framework, create a single page web application that allows a user to Create, List, Update and Delete customers. A customer is made of up the following attributes:
 Name,
