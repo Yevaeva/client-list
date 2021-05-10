@@ -2,12 +2,12 @@ import request from "../helperFunc/request"
 import * as actionTypes from './actionTypes'
 
 
-// let apiUrl
-// if (process.env.NODE_ENV === 'development') {
-//     apiUrl = process.env.REACT_APP_API_URL
-// } else {
-//     apiUrl = 'https://client-list-api.herokuapp.com'
-// }
+let apiUrl
+if (process.env.NODE_ENV === 'development') {
+    apiUrl = process.env.REACT_APP_API_URL
+} else {
+    apiUrl = 'https://client-list-api.herokuapp.com'
+}
 
 
 export const getClients = (data = {}) => {
