@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
 import { editProvider, getClients, removeProvider } from '../../store/actions';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 
 
 
@@ -62,12 +63,24 @@ class ProviderList extends React.Component {
                     />
                     {
                         this.state.edit ?
-                            <input className='editInput'
-                                type='text'
-                                value={this.state.inputValue}
-                                onChange={(e) => this.setState({ inputValue: e.target.value })}
-                                onKeyDown={this.handleKeyDown}
-                            /> :
+                            <>
+                                <OverlayTrigger
+                                trigger='focus'
+                                    placement='right-start'
+                                    overlay={
+                                        <Tooltip id={`tooltip-bottom-start`}>
+                                            Press Enter to save provider name.
+                                         </Tooltip>
+                                    }
+                                >
+                                <input className='editInput'
+                                    type='text'
+                                    value={this.state.inputValue}
+                                    onChange={(e) => this.setState({ inputValue: e.target.value })}
+                                    onKeyDown={this.handleKeyDown}
+                                />
+                                </OverlayTrigger>
+                            </> :
                             <label htmlFor={provider.name}>
                                 {provider.name}
                             </label>

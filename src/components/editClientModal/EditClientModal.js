@@ -75,7 +75,7 @@ class EditClientModal extends React.PureComponent {
       toast.error("All fields marked with * are required ❗❗❗")
       return
     };
-    const regexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    const regexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     const reg = /^\d+$/
 
     if (email && !regexp.test(email)){

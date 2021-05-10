@@ -67,7 +67,7 @@ class AddClient extends React.PureComponent {
     }
 
     addClient = () => {
-        const regexp =/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+        const regexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         const reg = /^\d+$/
         let { email, name, phone } = this.state
 
